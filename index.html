@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Al's Bird Houses - Handcrafted Homes for Feathered Friends</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        overflow-x: hidden;
+        background: linear-gradient(
+          135deg,
+          #87ceeb 0%,
+          #98fb98 30%,
+          #ffe4b5 60%,
+          #ffa07a 100%
+        );
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Dynamic background with day/night cycle */
+      .sky-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        transition: all 2s ease;
+      }
+
+      .day-mode {
+        background: linear-gradient(
+          180deg,
+          #87ceeb 0%,
+          #98fb98 50%,
+          #ffe4b5 100%
+        );
+      }
+
+      .sunset-mode {
+        background: linear-gradient(
+          180deg,
+          #ff6b6b 0%,
+          #ffa07a 50%,
+          #ffe4b5 100%
+        );
+      }
+
+      .night-mode {
+        background: linear-gradient(
+          180deg,
+          #191970 0%,
+          #483d8b 50%,
+          #2f4f4f 100%
+        );
+      }
+
+      /* Enhanced floating elements */
+      .floating-elements {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .cloud {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
+        animation: float 25s infinite ease-in-out;
+        cursor: pointer;
+        pointer-events: auto;
+        transition: all 0.3s ease;
+      }
+
+      .cloud:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .cloud::before,
+      .cloud::after {
+        content: "";
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
+      }
+
+      .cloud1,
+      .cloud2,
+      .cloud3,
+      .cloud4 {
+        width: 80px;
+        height: 40px;
+      }
+
+      .cloud1 {
+        top: 15%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+      .cloud2 {
+        top: 25%;
+        right: 15%;
+        animation-delay: -8s;
+      }
+      .cloud3 {
+        top: 60%;
+        left: 5%;
+        animation-delay: -15s;
+      }
+      .cloud4 {
+        top: 40%;
+        right: 25%;
+        animation-delay: -22s;
+      }
+
+      .cloud1::before,
+      .cloud2::before,
+      .cloud3::before,
+      .cloud4::before {
+        width: 50px;
+        height: 50px;
+        top: -25px;
+        left: 10px;
+      }
+
+      .cloud1::after,
+      .cloud2::after,
+      .cloud3::after,
+      .cloud4::after {
+        width: 60px;
+        height: 40px;
+        top: -15px;
+        right: 10px;
+      }
+
+      /* Sun/Moon */
+      .sun {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle, #ffd700 0%, #ffa500 100%);
+        border-radius: 50%;
+        top: 10%;
+        right: 10%;
+        animation: rotate 20s linear infinite;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+      }
+
+      .sun::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: radial-gradient(
+          circle,
+          transparent 60%,
+          rgba(255, 215, 0, 0.3) 70%
+        );
+        border-radius: 50%;
+        animation: pulse 3s ease-in-out infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) translateX(0px);
+        }
+        25% {
+          transform: translateY(-30px) translateX(20px);
+        }
+        50% {
+          transform: translateY(-15px) translateX(-10px);
+        }
+        75% {
+          transform: translateY(-25px) translateX(25px);
+        }
+      }
+
+      /* Header with glassmorphism */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo-icon {
+        width: 70px;
+        height: 70px;
+        position: relative;
+        animation: bounce 3s infinite;
+      }
+
+      /* Enhanced CSS Bird House Icon */
+      .birdhouse {
+        width: 45px;
+        height: 55px;
+        background: linear-gradient(145deg, #d2691e, #8b4513);
+        position: relative;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .birdhouse::before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        left: -7px;
+        width: 0;
+        height: 0;
+        border-left: 30px solid transparent;
+        border-right: 30px solid transparent;
+        border-bottom: 25px solid #654321;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+
+      .birdhouse::after {
+        content: "";
+        position: absolute;
+        top: 18px;
+        left: 17px;
+        width: 12px;
+        height: 12px;
+        background: #000;
+        border-radius: 50%;
+        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
+      }
+
+      .pole {
+        width: 6px;
+        height: 35px;
+        background: linear-gradient(145deg, #8b4513, #654321);
+        position: absolute;
+        bottom: -35px;
+        left: 20px;
+        border-radius: 3px;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-15px);
+        }
+        60% {
+          transform: translateY(-8px);
+        }
+      }
+
+      .logo h1 {
+        font-size: 2.8rem;
+        background: linear-gradient(45deg, #2f4f4f, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Enhanced navigation */
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #2f4f4f;
+        font-weight: 600;
+        padding: 0.8rem 1.5rem;
+        border-radius: 30px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      nav a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        transition: left 0.6s;
+      }
+
+      nav a:hover::before {
+        left: 100%;
+      }
+
+      nav a:hover {
+        background: rgba(76, 205, 196, 0.3);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Sky mode toggle button */
+      .sky-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: none;
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #2f4f4f;
+        font-weight: bold;
+      }
+
+      .sky-toggle:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      /* Enhanced hero section */
+      .hero {
+        position: relative;
+        z-index: 5;
+        text-align: center;
+        padding: 6rem 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+      }
+
+      .hero h2 {
+        font-size: 4rem;
+        background: linear-gradient(45deg, #2f4f4f, #4ecdc4, #ff6b6b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1.5rem;
+        animation: slideInUp 1s ease-out;
+      }
+
+      .hero p {
+        font-size: 1.4rem;
+        color: #556b2f;
+        margin-bottom: 3rem;
+        animation: slideInUp 1s ease-out 0.3s both;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: slideInUp 1s ease-out 0.6s both;
+      }
+
+      .cta-button {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        color: white;
+        padding: 1.2rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.6s;
+      }
+
+      .cta-button:hover::before {
+        left: 100%;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .secondary-button {
+        background: rgba(255, 255, 255, 0.2);
+        color: #2f4f4f;
+        border: 2px solid #4ecdc4;
+      }
+
+      .secondary-button:hover {
+        background: rgba(76, 205, 196, 0.2);
+        color: #2f4f4f;
+      }
+
+      @keyframes slideInUp {
+        from {
+          transform: translateY(60px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Interactive tree section with seasons */
+      .tree-section {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 4rem 2rem;
+      }
+
+      .tree-container {
+        position: relative;
+        cursor: pointer;
+        transform-style: preserve-3d;
+      }
+
+      .season-indicator {
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        color: #2f4f4f;
+        transition: all 0.3s ease;
+      }
+
+      /* Enhanced CSS Tree with seasons */
+      .tree {
+        width: 25px;
+        height: 250px;
+        background: linear-gradient(145deg, #8b4513, #654321);
+        position: relative;
+        margin: 0 auto;
+        border-radius: 12px;
+        transition: all 0.5s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .leaves {
+        position: absolute;
+        top: -120px;
+        left: -100px;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(
+          circle,
+          #228b22 0%,
+          #32cd32 70%,
+          #90ee90 100%
+        );
+        border-radius: 50%;
+        transition: all 0.8s ease;
+        animation: breathe 4s ease-in-out infinite;
+      }
+
+      .leaves.spring {
+        background: radial-gradient(
+          circle,
+          #90ee90 0%,
+          #98fb98 70%,
+          #f0fff0 100%
+        );
+      }
+
+      .leaves.summer {
+        background: radial-gradient(
+          circle,
+          #228b22 0%,
+          #32cd32 70%,
+          #90ee90 100%
+        );
+      }
+
+      .leaves.autumn {
+        background: radial-gradient(
+          circle,
+          #ff8c00 0%,
+          #ff6347 50%,
+          #ffd700 100%
+        );
+      }
+
+      .leaves.winter {
+        background: radial-gradient(
+          circle,
+          #696969 0%,
+          #778899 70%,
+          #d3d3d3 100%
+        );
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .leaves::before,
+      .leaves::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        transition: all 0.8s ease;
+      }
+
+      .leaves::before {
+        width: 170px;
+        height: 170px;
+        top: -80px;
+        left: 25px;
+        background: inherit;
+      }
+
+      .leaves::after {
+        width: 150px;
+        height: 150px;
+        top: -60px;
+        right: 15px;
+        background: inherit;
+      }
+
+      /* Enhanced birdhouses on tree */
+      .tree-birdhouse {
+        position: absolute;
+        width: 35px;
+        height: 40px;
+        border-radius: 0 0 6px 6px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .tree-birdhouse::before {
+        content: "";
+        position: absolute;
+        top: -18px;
+        left: -4px;
+        width: 0;
+        height: 0;
+        border-left: 22px solid transparent;
+        border-right: 22px solid transparent;
+        border-bottom: 18px solid #654321;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+
+      .tree-birdhouse::after {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 10px;
+        height: 10px;
+        background: #333;
+        border-radius: 50%;
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      }
+
+      .birdhouse1 {
+        top: -60px;
+        left: -140px;
+        background: linear-gradient(145deg, #d2691e, #b8860b);
+        animation: sway 4s ease-in-out infinite;
+      }
+
+      .birdhouse2 {
+        top: -40px;
+        right: -160px;
+        background: linear-gradient(145deg, #cd853f, #a0522d);
+        animation: sway 4s ease-in-out infinite 1.5s;
+      }
+
+      .birdhouse3 {
+        top: 30px;
+        left: -120px;
+        background: linear-gradient(145deg, #deb887, #d2691e);
+        animation: sway 4s ease-in-out infinite 3s;
+      }
+
+      .birdhouse4 {
+        top: 10px;
+        right: -140px;
+        background: linear-gradient(145deg, #f4a460, #daa520);
+        animation: sway 4s ease-in-out infinite 2s;
+      }
+
+      @keyframes sway {
+        0%,
+        100% {
+          transform: rotate(0deg) scale(1);
+        }
+        25% {
+          transform: rotate(3deg) scale(1.05);
+        }
+        50% {
+          transform: rotate(0deg) scale(1);
+        }
+        75% {
+          transform: rotate(-3deg) scale(1.05);
+        }
+      }
+
+      .tree-birdhouse:hover {
+        transform: scale(1.3) rotate(10deg);
+        filter: brightness(1.2);
+      }
+
+      .tree-container:hover .leaves {
+        transform: scale(1.15) rotate(2deg);
+        filter: brightness(1.3);
+      }
+
+      .tree-container:hover .tree {
+        transform: scale(1.1) rotate(-1deg);
+      }
+
+      /* Expanded products section */
+      .products {
+        position: relative;
+        z-index: 5;
+        padding: 6rem 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        margin: 2rem;
+        border-radius: 30px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .products h3 {
+        text-align: center;
+        font-size: 3rem;
+        background: linear-gradient(45deg, #2f4f4f, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 4rem;
+      }
+
+      .product-filters {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+      }
+
+      .filter-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid #4ecdc4;
+        color: #2f4f4f;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+      }
+
+      .filter-btn.active,
+      .filter-btn:hover {
+        background: #4ecdc4;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .product-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+        backdrop-filter: blur(20px);
+      }
+
+      .product-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+          from 0deg,
+          transparent,
+          rgba(76, 205, 196, 0.3),
+          transparent
+        );
+        transform: rotate(0deg);
+        transition: all 0.6s;
+        opacity: 0;
+      }
+
+      .product-card:hover::before {
+        opacity: 1;
+        transform: rotate(360deg);
+      }
+
+      .product-card:hover {
+        transform: translateY(-15px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        border-color: #4ecdc4;
+      }
+
+      .product-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.5rem;
+        position: relative;
+        transition: all 0.4s ease;
+      }
+
+      .product-card:hover .product-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .product-card h4 {
+        font-size: 1.8rem;
+        color: #2f4f4f;
+        margin-bottom: 1rem;
+      }
+
+      .product-card p {
+        color: #556b2f;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .product-features {
+        list-style: none;
+        margin-bottom: 1.5rem;
+        text-align: left;
+      }
+
+      .product-features li {
+        padding: 0.3rem 0;
+        color: #556b2f;
+        position: relative;
+        padding-left: 1.5rem;
+      }
+
+      .product-features li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #4ecdc4;
+        font-weight: bold;
+      }
+
+      .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+      }
+
+      .bird-compatibility {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .bird-icon {
+        width: 20px;
+        height: 15px;
+        background: #4ecdc4;
+        clip-path: polygon(0% 50%, 20% 0%, 40% 50%, 20% 100%);
+        animation: fly-in-place 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes fly-in-place {
+        0% {
+          transform: translateY(0px);
+        }
+        100% {
+          transform: translateY(-3px);
+        }
+      }
+
+      /* Enhanced birds flying animation */
+      .bird {
+        position: absolute;
+        width: 25px;
+        height: 12px;
+        animation: fly 20s linear infinite;
+        z-index: 2;
+      }
+
+      .bird::before,
+      .bird::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 5px;
+        background: #333;
+        border-radius: 50% 50% 0 50%;
+        animation: flap 0.3s ease-in-out infinite alternate;
+      }
+
+      .bird::before {
+        left: 0;
+        transform: rotate(-20deg);
+      }
+
+      .bird::after {
+        right: 0;
+        transform: rotate(20deg);
+      }
+
+      .bird1 {
+        top: 12%;
+        animation-delay: 0s;
+      }
+      .bird2 {
+        top: 20%;
+        animation-delay: -7s;
+      }
+      .bird3 {
+        top: 8%;
+        animation-delay: -14s;
+      }
+      .bird4 {
+        top: 25%;
+        animation-delay: -3s;
+      }
+      .bird5 {
+        top: 15%;
+        animation-delay: -10s;
+      }
+
+      @keyframes fly {
+        0% {
+          left: -60px;
+          transform: translateY(0px);
+        }
+        25% {
+          transform: translateY(-20px);
+        }
+        50% {
+          transform: translateY(10px);
+        }
+        75% {
+          transform: translateY(-15px);
+        }
+        100% {
+          left: calc(100% + 60px);
+          transform: translateY(0px);
+        }
+      }
+
+      @keyframes flap {
+        0% {
+          transform: rotate(-25deg) scaleY(1);
+        }
+        100% {
+          transform: rotate(-25deg) scaleY(0.3);
+        }
+      }
+
+      /* Interactive gallery section */
+      .gallery {
+        position: relative;
+        z-index: 5;
+        padding: 4rem 2rem;
+        text-align: center;
+      }
+
+      .gallery h3 {
+        font-size: 2.5rem;
+        color: #2f4f4f;
+        margin-bottom: 3rem;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .gallery-item {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .gallery-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, #4ecdc4, #ff6b6b);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .gallery-item:hover::before {
+        opacity: 0.1;
+      }
+
+      .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Enhanced contact section */
+      .contact {
+        position: relative;
+        z-index: 5;
+        text-align: center;
+        padding: 6rem 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+      }
+
+      .contact h3 {
+        font-size: 3rem;
+        background: linear-gradient(45deg, #2f4f4f, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 3rem;
+      }
+
+      .contact-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto 3rem;
+      }
+
+      .contact-item {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2rem;
+        border-radius: 20px;
+        transition: all 0.4s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .contact-item:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .contact-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(45deg, #4ecdc4, #ff6b6b);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        margin: 0 auto 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .contact-item:hover .contact-icon {
+        transform: scale(1.1) rotate(10deg);
+      }
+
+      /* Weather widget */
+      .weather-widget {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 1rem;
+        border-radius: 15px;
+        color: #2f4f4f;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .weather-widget:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      /* Sound toggle */
+      .sound-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: none;
+        border-radius: 50px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #2f4f4f;
+        font-size: 1.2rem;
+        z-index: 1000;
+      }
+
+      .sound-toggle:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .product-grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero h2 {
+          font-size: 2.8rem;
+        }
+        .hero p {
+          font-size: 1.2rem;
+        }
+        .logo h1 {
+          font-size: 2.2rem;
+        }
+        nav ul {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        header {
+          flex-direction: column;
+          gap: 1rem;
+          padding: 1rem;
+        }
+        .contact-info {
+          grid-template-columns: 1fr;
+        }
+        .hero-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        .product-filters {
+          justify-content: center;
+        }
+        .tree {
+          width: 20px;
+          height: 200px;
+        }
+        .leaves {
+          width: 180px;
+          height: 180px;
+          top: -100px;
+          left: -80px;
+        }
+        .weather-widget,
+        .sound-toggle {
+          position: relative;
+          margin: 1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h2 {
+          font-size: 2.2rem;
+        }
+        .products,
+        .contact {
+          margin: 1rem;
+          padding: 3rem 1rem;
+        }
+        .product-card {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sky overlay for day/night cycle -->
+    <div class="sky-overlay day-mode" id="skyOverlay"></div>
+
+    <!-- Sky mode toggle -->
+    <button class="sky-toggle" onclick="toggleSkyMode()" id="skyToggle">
+      🌅 Day
+    </button>
+
+    <!-- Sound toggle -->
+    <button class="sound-toggle" onclick="toggleSound()" id="soundToggle">
+      🔊
+    </button>
+
+    <!-- Weather widget -->
+    <div class="weather-widget" id="weatherWidget">
+      <div style="font-size: 0.9rem; font-weight: bold">
+        Perfect Day for Birds!
+      </div>
+      <div style="font-size: 0.8rem">🌤️ 72°F - Light Breeze</div>
+    </div>
+
+    <!-- Enhanced animated background elements -->
+    <div class="floating-elements">
+      <div class="cloud cloud1" onclick="cloudInteraction(1)"></div>
+      <div class="cloud cloud2" onclick="cloudInteraction(2)"></div>
+      <div class="cloud cloud3" onclick="cloudInteraction(3)"></div>
+      <div class="cloud cloud4" onclick="cloudInteraction(4)"></div>
+      <div class="sun" onclick="sunInteraction()"></div>
+      <div class="bird bird1"></div>
+      <div class="bird bird2"></div>
+      <div class="bird bird3"></div>
+      <div class="bird bird4"></div>
+      <div class="bird bird5"></div>
+    </div>
+
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <div class="birdhouse">
+            <div class="pole"></div>
+          </div>
+        </div>
+        <h1>Al's Bird Houses</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">Collection</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#about">About Al</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
+      <h2>Handcrafted Homes for Feathered Friends</h2>
+      <p>
+        🐦 Welcome nature's musicians to your garden with Al's custom-built bird
+        houses 🐦
+      </p>
+      <div class="hero-buttons">
+        <button class="cta-button" onclick="scrollToProducts()">
+          🏠 Explore Collection
+        </button>
+        <button class="cta-button secondary-button" onclick="playBirdSounds()">
+          🎵 Hear Bird Songs
+        </button>
+        <button class="cta-button secondary-button" onclick="openCustomizer()">
+          🎨 Design Custom
+        </button>
+      </div>
+    </section>
+
+    <section class="tree-section">
+      <div class="tree-container" onclick="animateTree()">
+        <div class="season-indicator" id="seasonIndicator">🌸 Spring Mode</div>
+        <div class="tree">
+          <div class="leaves spring" id="treeLeaves"></div>
+          <div
+            class="tree-birdhouse birdhouse1"
+            onclick="showBirdhouseInfo(event, 'Classic Traditional')"
+          ></div>
+          <div
+            class="tree-birdhouse birdhouse2"
+            onclick="showBirdhouseInfo(event, 'Premium Villa')"
+          ></div>
+          <div
+            class="tree-birdhouse birdhouse3"
+            onclick="showBirdhouseInfo(event, 'Rustic Cabin')"
+          ></div>
+          <div
+            class="tree-birdhouse birdhouse4"
+            onclick="showBirdhouseInfo(event, 'Modern Minimalist')"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="products" id="products">
+      <h3>🏡 Our Complete Bird House Collection</h3>
+
+      <div class="product-filters">
+        <button class="filter-btn active" onclick="filterProducts('all')">
+          All Styles
+        </button>
+        <button class="filter-btn" onclick="filterProducts('traditional')">
+          Traditional
+        </button>
+        <button class="filter-btn" onclick="filterProducts('modern')">
+          Modern
+        </button>
+        <button class="filter-btn" onclick="filterProducts('specialty')">
+          Specialty
+        </button>
+        <button class="filter-btn" onclick="filterProducts('large')">
+          Large Birds
+        </button>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Traditional Category -->
+        <div
+          class="product-card"
+          data-category="traditional"
+          onclick="selectProduct('classic-traditional')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #d2691e, #8b4513);
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Classic Traditional</h4>
+          <p>
+            The timeless favorite! Perfect entry hole for chickadees, wrens, and
+            nuthatches.
+          </p>
+          <ul class="product-features">
+            <li>Cedar construction</li>
+            <li>Weather-resistant finish</li>
+            <li>Easy-clean removable floor</li>
+            <li>Proper ventilation holes</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+          </div>
+          <div class="price">$45</div>
+        </div>
+
+        <div
+          class="product-card"
+          data-category="traditional"
+          onclick="selectProduct('rustic-cabin')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #8b4513, #654321);
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Rustic Cabin</h4>
+          <p>
+            Handcrafted with reclaimed barn wood. Each piece tells a unique
+            story.
+          </p>
+          <ul class="product-features">
+            <li>Reclaimed barn wood</li>
+            <li>Natural weathered look</li>
+            <li>Copper roof accents</li>
+            <li>Hand-carved details</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+          </div>
+          <div class="price">$65</div>
+        </div>
+
+        <!-- Modern Category -->
+        <div
+          class="product-card"
+          data-category="modern"
+          onclick="selectProduct('modern-minimalist')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #f5f5dc, #d3d3d3);
+                border-radius: 0 0 0 0;
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Modern Minimalist</h4>
+          <p>
+            Clean lines and contemporary design. Perfect for modern gardens and
+            patios.
+          </p>
+          <ul class="product-features">
+            <li>Sleek geometric design</li>
+            <li>Powder-coated finish</li>
+            <li>Hidden mounting system</li>
+            <li>UV-resistant materials</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+          </div>
+          <div class="price">$55</div>
+        </div>
+
+        <div
+          class="product-card"
+          data-category="modern"
+          onclick="selectProduct('architectural-modern')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #708090, #2f4f4f);
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Architectural Modern</h4>
+          <p>
+            Inspired by mid-century architecture. A statement piece for your
+            garden.
+          </p>
+          <ul class="product-features">
+            <li>Angular modern design</li>
+            <li>Weather-resistant steel</li>
+            <li>Integrated perch design</li>
+            <li>Color customization available</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+          </div>
+          <div class="price">$75</div>
+        </div>
+
+        <!-- Premium Category -->
+        <div
+          class="product-card"
+          data-category="traditional"
+          onclick="selectProduct('premium-villa')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #cd853f, #a0522d);
+              "
+            >
+              <div
+                class="pole"
+                style="background: linear-gradient(145deg, #8b4513, #654321)"
+              ></div>
+            </div>
+          </div>
+          <h4>Premium Villa</h4>
+          <p>
+            Multi-room luxury accommodation. Features multiple entry points and
+            spacious interior.
+          </p>
+          <ul class="product-features">
+            <li>Multiple compartments</li>
+            <li>Premium hardwood construction</li>
+            <li>Copper roof with patina</li>
+            <li>Easy-access cleaning ports</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+            <div class="bird-icon"></div>
+          </div>
+          <div class="price">$95</div>
+        </div>
+
+        <!-- Specialty Category -->
+        <div
+          class="product-card"
+          data-category="specialty"
+          onclick="selectProduct('purple-martin-mansion')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #deb887, #cd853f);
+                width: 60px;
+                height: 70px;
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Purple Martin Mansion</h4>
+          <p>
+            Multi-story apartment complex specifically designed for Purple
+            Martin colonies.
+          </p>
+          <ul class="product-features">
+            <li>12-16 individual apartments</li>
+            <li>Telescoping pole system</li>
+            <li>Predator guard included</li>
+            <li>Nest compartment monitoring</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon" style="background: #8a2be2"></div>
+            <div class="bird-icon" style="background: #8a2be2"></div>
+            <div class="bird-icon" style="background: #8a2be2"></div>
+            <div class="bird-icon" style="background: #8a2be2"></div>
+            <div class="bird-icon" style="background: #8a2be2"></div>
+          </div>
+          <div class="price">$185</div>
+        </div>
+
+        <div
+          class="product-card"
+          data-category="specialty"
+          onclick="selectProduct('owl-box')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #696969, #2f4f4f);
+                width: 50px;
+                height: 65px;
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Screech Owl Box</h4>
+          <p>
+            Specially designed for small owls. Includes wood shavings and proper
+            dimensions.
+          </p>
+          <ul class="product-features">
+            <li>Owl-specific entry hole size</li>
+            <li>Deep interior chamber</li>
+            <li>Natural wood shavings included</li>
+            <li>Predator-resistant design</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div
+              class="bird-icon"
+              style="background: #8b4513; border-radius: 50%"
+            ></div>
+            <div
+              class="bird-icon"
+              style="background: #8b4513; border-radius: 50%"
+            ></div>
+          </div>
+          <div class="price">$85</div>
+        </div>
+
+        <!-- Large Birds Category -->
+        <div
+          class="product-card"
+          data-category="large"
+          onclick="selectProduct('woodpecker-house')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(145deg, #8b4513, #654321);
+                width: 45px;
+                height: 75px;
+              "
+            >
+              <div class="pole"></div>
+            </div>
+          </div>
+          <h4>Woodpecker Haven</h4>
+          <p>
+            Extra-deep chamber for woodpeckers and flickers. Built to handle
+            vigorous activity.
+          </p>
+          <ul class="product-features">
+            <li>Extra-deep 12" chamber</li>
+            <li>Reinforced construction</li>
+            <li>Natural bark exterior</li>
+            <li>Large entrance hole</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon" style="background: #cd5c5c"></div>
+            <div class="bird-icon" style="background: #cd5c5c"></div>
+            <div class="bird-icon" style="background: #cd5c5c"></div>
+          </div>
+          <div class="price">$78</div>
+        </div>
+
+        <!-- Custom Category -->
+        <div
+          class="product-card"
+          data-category="all"
+          onclick="selectProduct('custom-design')"
+        >
+          <div class="product-icon">
+            <div
+              class="birdhouse"
+              style="
+                transform: scale(1.8);
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffd700);
+                animation: rainbowShift 3s ease-in-out infinite;
+              "
+            >
+              <div
+                class="pole"
+                style="background: linear-gradient(145deg, #8b4513, #654321)"
+              ></div>
+            </div>
+          </div>
+          <h4>Custom Design</h4>
+          <p>
+            Your vision, Al's craftsmanship. Personalized bird houses made to
+            your exact specifications.
+          </p>
+          <ul class="product-features">
+            <li>Unlimited design options</li>
+            <li>Choice of materials</li>
+            <li>Custom colors & finishes</li>
+            <li>Personalized engravings</li>
+          </ul>
+          <div class="bird-compatibility">
+            <div class="bird-icon" style="background: #ff6b6b"></div>
+            <div class="bird-icon" style="background: #4ecdc4"></div>
+            <div class="bird-icon" style="background: #ffd700"></div>
+            <div class="bird-icon" style="background: #ff69b4"></div>
+            <div class="bird-icon" style="background: #32cd32"></div>
+          </div>
+          <div class="price">$95+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Gallery Section -->
+    <section class="gallery" id="gallery">
+      <h3>🖼️ Customer Bird House Gallery</h3>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="showGalleryImage('backyard1')">
+          <div style="color: #2f4f4f; font-weight: bold">
+            Sarah's Backyard Paradise
+          </div>
+        </div>
+        <div class="gallery-item" onclick="showGalleryImage('garden2')">
+          <div style="color: #2f4f4f; font-weight: bold">
+            Mike's Garden Collection
+          </div>
+        </div>
+        <div class="gallery-item" onclick="showGalleryImage('custom3')">
+          <div style="color: #2f4f4f; font-weight: bold">
+            Custom Purple Martin Setup
+          </div>
+        </div>
+        <div class="gallery-item" onclick="showGalleryImage('modern4')">
+          <div style="color: #2f4f4f; font-weight: bold">
+            Modern Minimalist Display
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Contact Section -->
+    <section class="contact" id="contact">
+      <h3>🤝 Get In Touch with Al</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <strong>Call Al Directly</strong><br />
+            (555) 123-BIRD<br />
+            <small>Mon-Sat: 8AM-6PM</small>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <strong>Email Orders</strong><br />
+            al@birdhouses.com<br />
+            <small>Response within 24 hours</small>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🏠</div>
+          <div>
+            <strong>Workshop Visits</strong><br />
+            By appointment only<br />
+            <small>See the crafting process!</small>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🚚</div>
+          <div>
+            <strong>Local Delivery</strong><br />
+            Free within 25 miles<br />
+            <small>Professional installation available</small>
+          </div>
+        </div>
+      </div>
+      <div
+        style="
+          background: rgba(255, 255, 255, 0.1);
+          padding: 2rem;
+          border-radius: 20px;
+          margin-top: 2rem;
+          backdrop-filter: blur(10px);
+        "
+      >
+        <p style="color: #556b2f; font-size: 1.2rem; margin-bottom: 1rem">
+          🔨 <strong>About Al:</strong> 15+ years of passionate woodworking
+        </p>
+        <p style="color: #556b2f; font-size: 1rem">
+          Every bird house is lovingly handcrafted in Al's local workshop using
+          sustainable materials. Al believes every bird deserves a beautiful,
+          safe home, and every customer deserves personalized service.
+        </p>
+      </div>
+    </section>
+
+    <script>
+      // Enhanced interactivity variables
+      let currentSkyMode = "day";
+      let currentSeason = "spring";
+      let soundEnabled = true;
+      let currentFilter = "all";
+
+      // Sky mode cycling
+      function toggleSkyMode() {
+        const skyOverlay = document.getElementById("skyOverlay");
+        const skyToggle = document.getElementById("skyToggle");
+        const modes = ["day", "sunset", "night"];
+        const modeIndex = modes.indexOf(currentSkyMode);
+        const nextMode = modes[(modeIndex + 1) % modes.length];
+
+        skyOverlay.className = `sky-overlay ${nextMode}-mode`;
+        currentSkyMode = nextMode;
+
+        const modeEmojis = { day: "🌅", sunset: "🌅", night: "🌙" };
+        const modeNames = { day: "Day", sunset: "Sunset", night: "Night" };
+        skyToggle.innerHTML = `${modeEmojis[nextMode]} ${modeNames[nextMode]}`;
+
+        // Update weather widget based on time
+        updateWeatherWidget();
+      }
+
+      // Season cycling for tree
+      function animateTree() {
+        const tree = document.querySelector(".tree-container");
+        const leaves = document.getElementById("treeLeaves");
+        const seasonIndicator = document.getElementById("seasonIndicator");
+        const seasons = ["spring", "summer", "autumn", "winter"];
+        const seasonIndex = seasons.indexOf(currentSeason);
+        const nextSeason = seasons[(seasonIndex + 1) % seasons.length];
+
+        // Animate tree
+        tree.style.transform = "scale(1.15) rotate(5deg)";
+        setTimeout(() => {
+          tree.style.transform = "scale(1) rotate(0deg)";
+        }, 600);
+
+        // Change season
+        leaves.className = `leaves ${nextSeason}`;
+        currentSeason = nextSeason;
+
+        const seasonEmojis = {
+          spring: "🌸",
+          summer: "🌞",
+          autumn: "🍂",
+          winter: "❄️",
+        };
+        const seasonNames = {
+          spring: "Spring",
+          summer: "Summer",
+          autumn: "Autumn",
+          winter: "Winter",
+        };
+        seasonIndicator.innerHTML = `${seasonEmojis[nextSeason]} ${seasonNames[nextSeason]} Mode`;
+
+        // Create seasonal effects
+        createSeasonalEffects(nextSeason);
+        createSparkles(tree);
+
+        if (soundEnabled) playSeasonSound(nextSeason);
+      }
+
+      // Seasonal effects
+      function createSeasonalEffects(season) {
+        const effects = {
+          spring: () => createPetals(),
+          summer: () => createFireflies(),
+          autumn: () => createFallingLeaves(),
+          winter: () => createSnowflakes(),
+        };
+        effects[season]();
+      }
+
+      function createPetals() {
+        for (let i = 0; i < 8; i++) {
+          const petal = document.createElement("div");
+          petal.style.cssText = `
+                    position: absolute;
+                    width: 8px;
+                    height: 8px;
+                    background: #FFB6C1;
+                    border-radius: 50% 10px;
+                    pointer-events: none;
+                    top: ${Math.random() * window.innerHeight}px;
+                    left: ${Math.random() * window.innerWidth}px;
+                    animation: petalFall 4s ease-out forwards;
+                `;
+          document.body.appendChild(petal);
+          setTimeout(() => petal.remove(), 4000);
+        }
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes petalFall {
+                    0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+                    100% { opacity: 0; transform: translateY(200px) rotate(360deg); }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      function createFireflies() {
+        for (let i = 0; i < 5; i++) {
+          const firefly = document.createElement("div");
+          firefly.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: #FFFF00;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    top: ${Math.random() * window.innerHeight}px;
+                    left: ${Math.random() * window.innerWidth}px;
+                    animation: firefly 6s ease-in-out infinite;
+                    box-shadow: 0 0 10px #FFFF00;
+                `;
+          document.body.appendChild(firefly);
+          setTimeout(() => firefly.remove(), 6000);
+        }
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes firefly {
+                    0%, 100% { opacity: 0.3; transform: translate(0, 0); }
+                    25% { opacity: 1; transform: translate(30px, -20px); }
+                    50% { opacity: 0.5; transform: translate(-20px, 30px); }
+                    75% { opacity: 1; transform: translate(40px, 10px); }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      function createFallingLeaves() {
+        const colors = ["#FF8C00", "#FF6347", "#FFD700", "#CD853F"];
+        for (let i = 0; i < 10; i++) {
+          const leaf = document.createElement("div");
+          leaf.style.cssText = `
+                    position: absolute;
+                    width: 12px;
+                    height: 12px;
+                    background: ${
+                      colors[Math.floor(Math.random() * colors.length)]
+                    };
+                    border-radius: 0 100% 0 100%;
+                    pointer-events: none;
+                    top: -20px;
+                    left: ${Math.random() * window.innerWidth}px;
+                    animation: leafFall 5s ease-out forwards;
+                `;
+          document.body.appendChild(leaf);
+          setTimeout(() => leaf.remove(), 5000);
+        }
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes leafFall {
+                    0% { transform: translateY(0) rotate(0deg); }
+                    100% { transform: translateY(${
+                      window.innerHeight + 50
+                    }px) rotate(360deg); }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      function createSnowflakes() {
+        for (let i = 0; i < 15; i++) {
+          const snowflake = document.createElement("div");
+          snowflake.innerHTML = "❄";
+          snowflake.style.cssText = `
+                    position: absolute;
+                    color: white;
+                    font-size: ${Math.random() * 10 + 10}px;
+                    pointer-events: none;
+                    top: -20px;
+                    left: ${Math.random() * window.innerWidth}px;
+                    animation: snowFall ${
+                      Math.random() * 3 + 4
+                    }s linear forwards;
+                `;
+          document.body.appendChild(snowflake);
+          setTimeout(() => snowflake.remove(), 7000);
+        }
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes snowFall {
+                    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                    100% { transform: translateY(${
+                      window.innerHeight + 50
+                    }px) rotate(360deg); opacity: 0; }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      // Enhanced cloud interaction
+      function cloudInteraction(cloudNumber) {
+        const cloud = document.querySelector(`.cloud${cloudNumber}`);
+        cloud.style.transform = "scale(1.3)";
+        cloud.style.filter = "brightness(1.2)";
+
+        // Create rain effect
+        if (Math.random() > 0.5) {
+          createRainDrops(cloud);
+        }
+
+        setTimeout(() => {
+          cloud.style.transform = "";
+          cloud.style.filter = "";
+        }, 1000);
+
+        if (soundEnabled) playCloudSound();
+      }
+
+      function createRainDrops(cloud) {
+        const rect = cloud.getBoundingClientRect();
+        for (let i = 0; i < 5; i++) {
+          const drop = document.createElement("div");
+          drop.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 10px;
+                    background: #4682B4;
+                    border-radius: 50px;
+                    pointer-events: none;
+                    top: ${rect.bottom}px;
+                    left: ${rect.left + Math.random() * rect.width}px;
+                    animation: rainDrop 2s ease-out forwards;
+                `;
+          document.body.appendChild(drop);
+          setTimeout(() => drop.remove(), 2000);
+        }
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes rainDrop {
+                    0% { opacity: 1; transform: translateY(0); }
+                    100% { opacity: 0; transform: translateY(100px); }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      // Sun interaction
+      function sunInteraction() {
+        const sun = document.querySelector(".sun");
+        sun.style.transform = "scale(1.3)";
+        sun.style.boxShadow = "0 0 50px rgba(255, 215, 0, 0.9)";
+
+        // Create sun rays
+        for (let i = 0; i < 8; i++) {
+          const ray = document.createElement("div");
+          ray.style.cssText = `
+                    position: absolute;
+                    width: 3px;
+                    height: 30px;
+                    background: linear-gradient(to bottom, #FFD700, transparent);
+                    top: 10%;
+                    right: 10%;
+                    transform-origin: 50% 30px;
+                    transform: rotate(${i * 45}deg);
+                    animation: sunRay 2s ease-out forwards;
+                    pointer-events: none;
+                    z-index: 2;
+                `;
+          document.querySelector(".floating-elements").appendChild(ray);
+          setTimeout(() => ray.remove(), 2000);
+        }
+
+        setTimeout(() => {
+          sun.style.transform = "";
+          sun.style.boxShadow = "";
+        }, 2000);
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes sunRay {
+                    0% { opacity: 1; transform: rotate(var(--rotation)) scale(1); }
+                    100% { opacity: 0; transform: rotate(var(--rotation)) scale(1.5); }
+                }
+            `;
+        document.head.appendChild(style);
+
+        if (soundEnabled) playSunSound();
+      }
+
+      // Product filtering
+      function filterProducts(category) {
+        const cards = document.querySelectorAll(".product-card");
+        const buttons = document.querySelectorAll(".filter-btn");
+
+        // Update active button
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        // Filter cards with animation
+        cards.forEach((card, index) => {
+          const cardCategory = card.getAttribute("data-category");
+          const shouldShow = category === "all" || cardCategory === category;
+
+          setTimeout(() => {
+            if (shouldShow) {
+              card.style.display = "block";
+              card.style.animation = "slideInUp 0.6s ease-out forwards";
+            } else {
+              card.style.animation = "slideOutDown 0.4s ease-out forwards";
+              setTimeout(() => {
+                card.style.display = "none";
+              }, 400);
+            }
+          }, index * 100);
+        });
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes slideOutDown {
+                    0% { opacity: 1; transform: translateY(0); }
+                    100% { opacity: 0; transform: translateY(50px); }
+                }
+            `;
+        document.head.appendChild(style);
+
+        currentFilter = category;
+      }
+
+      // Enhanced birdhouse info
+      function showBirdhouseInfo(event, type) {
+        event.stopPropagation();
+        const birdhouse = event.target;
+
+        const popup = document.createElement("div");
+        popup.style.cssText = `
+                position: absolute;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 1.5rem;
+                border-radius: 15px;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                top: ${event.pageY - 80}px;
+                left: ${event.pageX + 30}px;
+                font-size: 1rem;
+                color: #2F4F4F;
+                backdrop-filter: blur(20px);
+                border: 3px solid #4ECDC4;
+                animation: popInBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                max-width: 300px;
+            `;
+
+        const messages = {
+          "Classic Traditional": {
+            text: "Perfect starter home for chickadees and wrens! 🐦",
+            price: "$45",
+            birds: "Chickadees, Wrens, Nuthatches",
+          },
+          "Premium Villa": {
+            text: "Luxury accommodation for bird families! 🏘️",
+            price: "$95",
+            birds: "Multiple species, Family groups",
+          },
+          "Rustic Cabin": {
+            text: "Handcrafted with authentic barn wood! 🏚️",
+            price: "$65",
+            birds: "Bluebirds, Swallows, Small Songbirds",
+          },
+          "Modern Minimalist": {
+            text: "Contemporary design meets function! 🏢",
+            price: "$55",
+            birds: "Urban birds, Modern garden species",
+          },
+        };
+
+        const info = messages[type];
+        popup.innerHTML = `
+                <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 0.5rem;">${type}</div>
+                <div style="margin-bottom: 0.5rem;">${info.text}</div>
+                <div style="font-size: 0.9rem; color: #556B2F; margin-bottom: 0.5rem;">
+                    <strong>Perfect for:</strong> ${info.birds}
+                </div>
+                <div style="font-size: 1.2rem; font-weight: bold; color: #FF6B6B;">${info.price}</div>
+                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #666;">
+                    Click tree to change seasons! 🌱
+                </div>
+            `;
+
+        document.body.appendChild(popup);
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes popInBounce {
+                    0% { transform: scale(0) rotate(180deg); opacity: 0; }
+                    50% { transform: scale(1.1) rotate(10deg); opacity: 0.8; }
+                    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                }
+            `;
+        document.head.appendChild(style);
+
+        setTimeout(() => {
+          popup.style.opacity = "0";
+          popup.style.transform = "scale(0.8) rotate(-10deg)";
+          setTimeout(() => popup.remove(), 400);
+        }, 4000);
+
+        birdhouse.style.transform = "scale(1.4) rotate(15deg)";
+        setTimeout(() => {
+          birdhouse.style.transform = "scale(1) rotate(0deg)";
+        }, 400);
+
+        if (soundEnabled) playBirdhouseSound();
+      }
+
+      // Enhanced product selection
+      function selectProduct(type) {
+        const card = event.currentTarget;
+
+        card.style.transform = "translateY(-20px) scale(1.08)";
+        card.style.background = "rgba(76, 205, 196, 0.3)";
+        card.style.border = "3px solid #4ECDC4";
+        card.style.boxShadow = "0 20px 50px rgba(76, 205, 196, 0.4)";
+
+        const message = document.createElement("div");
+        message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #FFD700);
+                color: white;
+                padding: 3rem;
+                border-radius: 20px;
+                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+                z-index: 1000;
+                text-align: center;
+                font-size: 1.3rem;
+                animation: messageSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                backdrop-filter: blur(20px);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                max-width: 400px;
+            `;
+
+        const productNames = {
+          "classic-traditional": "Classic Traditional Bird House",
+          "premium-villa": "Premium Villa",
+          "rustic-cabin": "Rustic Cabin",
+          "modern-minimalist": "Modern Minimalist",
+          "architectural-modern": "Architectural Modern",
+          "purple-martin-mansion": "Purple Martin Mansion",
+          "owl-box": "Screech Owl Box",
+          "woodpecker-house": "Woodpecker Haven",
+          "custom-design": "Custom Design",
+        };
+
+        message.innerHTML = `
+                <div style="font-size: 2rem; margin-bottom: 1rem;">🎉</div>
+                <div style="font-weight: bold; margin-bottom: 1rem;">Excellent Choice!</div>
+                <div style="margin-bottom: 1rem;">${productNames[type]} selected</div>
+                <div style="font-size: 1rem; margin-bottom: 1.5rem; opacity: 0.9;">
+                    Al will be delighted to craft this for you!
+                </div>
+                <div style="font-size: 0.9rem; background: rgba(255, 255, 255, 0.2); padding: 1rem; border-radius: 10px;">
+                    📞 Call (555) 123-BIRD to place your order<br>
+                    📧 Or email al@birdhouses.com
+                </div>
+            `;
+
+        document.body.appendChild(message);
+
+        const messageStyle = document.createElement("style");
+        messageStyle.textContent = `
+                @keyframes messageSlideIn {
+                    0% { transform: translate(-50%, -50%) scale(0.3) rotate(180deg); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) scale(1.1) rotate(10deg); opacity: 0.8; }
+                    100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+                }
+            `;
+        document.head.appendChild(messageStyle);
+
+        setTimeout(() => {
+          message.style.opacity = "0";
+          message.style.transform =
+            "translate(-50%, -50%) scale(0.8) rotate(-10deg)";
+          setTimeout(() => message.remove(), 500);
+
+          card.style.transform = "";
+          card.style.background = "";
+          card.style.border = "";
+          card.style.boxShadow = "";
+        }, 5000);
+
+        if (soundEnabled) playSuccessSound();
+      }
+
+      // Gallery interaction
+      function showGalleryImage(imageId) {
+        const descriptions = {
+          backyard1:
+            "Sarah transformed her backyard with 3 Classic Traditional houses and 1 Premium Villa. The birds love it!",
+          garden2:
+            "Mike's garden features a beautiful arrangement of Modern Minimalist houses with custom color coordination.",
+          custom3:
+            "This Purple Martin Mansion houses 12 families and has been active for 3 seasons running!",
+          modern4:
+            "A stunning display of Architectural Modern houses creating a contemporary bird community.",
+        };
+
+        const popup = document.createElement("div");
+        popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255, 255, 255, 0.95);
+                padding: 2rem;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                text-align: center;
+                max-width: 500px;
+                backdrop-filter: blur(20px);
+                border: 2px solid #4ECDC4;
+                animation: galleryPop 0.5s ease-out;
+            `;
+
+        popup.innerHTML = `
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #2F4F4F;">
+                    Customer Showcase
+                </div>
+                <div style="color: #556B2F; line-height: 1.6; margin-bottom: 1.5rem;">
+                    ${descriptions[imageId]}
+                </div>
+                <button onclick="this.parentElement.remove()" style="
+                    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+                    color: white;
+                    border: none;
+                    padding: 0.8rem 2rem;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    Close
+                </button>
+            `;
+
+        document.body.appendChild(popup);
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes galleryPop {
+                    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      // Sound functions
+      function toggleSound() {
+        soundEnabled = !soundEnabled;
+        const soundToggle = document.getElementById("soundToggle");
+        soundToggle.innerHTML = soundEnabled ? "🔊" : "🔇";
+
+        if (soundEnabled) {
+          playToggleSound();
+        }
+      }
+
+      function playBirdSounds() {
+        if (!soundEnabled) return;
+        // Simulate bird sound playing
+        showNotification("🎵 Playing beautiful bird songs!");
+      }
+
+      function playSeasonSound(season) {
+        if (!soundEnabled) return;
+        const sounds = {
+          spring: "🐦 Chirping birds",
+          summer: "🦗 Summer crickets",
+          autumn: "🍂 Rustling leaves",
+          winter: "❄️ Gentle wind",
+        };
+        showNotification(`${sounds[season]} playing`);
+      }
+
+      function playBirdhouseSound() {
+        if (!soundEnabled) return;
+        showNotification("🔨 Woodworking sounds");
+      }
+
+      function playSuccessSound() {
+        if (!soundEnabled) return;
+        showNotification("🎉 Success chime");
+      }
+
+      function playCloudSound() {
+        if (!soundEnabled) return;
+        showNotification("🌧️ Gentle rain sounds");
+      }
+
+      function playSunSound() {
+        if (!soundEnabled) return;
+        showNotification("☀️ Warm summer breeze");
+      }
+
+      function playToggleSound() {
+        showNotification("🔊 Sound enabled");
+      }
+
+      // Utility functions
+      function showNotification(message) {
+        const notification = document.createElement("div");
+        notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: rgba(76, 205, 196, 0.9);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                z-index: 1001;
+                animation: slideInRight 0.5s ease-out;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.animation = "slideOutRight 0.5s ease-out forwards";
+          setTimeout(() => notification.remove(), 500);
+        }, 2000);
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes slideInRight {
+                    0% { transform: translateX(100%); opacity: 0; }
+                    100% { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    0% { transform: translateX(0); opacity: 1; }
+                    100% { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      function updateWeatherWidget() {
+        const weatherWidget = document.getElementById("weatherWidget");
+        const weatherData = {
+          day: {
+            temp: "72°F",
+            condition: "🌤️",
+            desc: "Perfect Day for Birds!",
+          },
+          sunset: { temp: "68°F", condition: "🌅", desc: "Golden Hour Magic!" },
+          night: {
+            temp: "62°F",
+            condition: "🌙",
+            desc: "Peaceful Night Sounds",
+          },
+        };
+
+        const weather = weatherData[currentSkyMode];
+        weatherWidget.innerHTML = `
+                <div style="font-size: 0.9rem; font-weight: bold;">${weather.desc}</div>
+                <div style="font-size: 0.8rem;">${weather.condition} ${weather.temp} - Light Breeze</div>
+            `;
+      }
+
+      function openCustomizer() {
+        const customizer = document.createElement("div");
+        customizer.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255, 255, 255, 0.95);
+                padding: 3rem;
+                border-radius: 25px;
+                box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                text-align: center;
+                max-width: 600px;
+                backdrop-filter: blur(20px);
+                border: 3px solid #4ECDC4;
+                animation: customizerOpen 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            `;
+
+        customizer.innerHTML = `
+                <div style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem; color: #2F4F4F;">
+                    🎨 Custom Bird House Designer
+                </div>
+                <div style="color: #556B2F; line-height: 1.6; margin-bottom: 2rem;">
+                    Work directly with Al to create your perfect bird house! Choose materials, colors, 
+                    size, special features, and even personal engravings.
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                    <div style="background: rgba(76, 205, 196, 0.1); padding: 1rem; border-radius: 10px;">
+                        <strong>Materials:</strong><br>Cedar, Pine, Reclaimed Wood, Metal
+                    </div>
+                    <div style="background: rgba(255, 107, 107, 0.1); padding: 1rem; border-radius: 10px;">
+                        <strong>Features:</strong><br>Multi-rooms, Cameras, Heating, LED lighting
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+                        color: white;
+                        border: none;
+                        padding: 1rem 2rem;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        Start Designing
+                    </button>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: rgba(255, 255, 255, 0.5);
+                        color: #2F4F4F;
+                        border: 2px solid #4ECDC4;
+                        padding: 1rem 2rem;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.background='rgba(76, 205, 196, 0.2)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.5)'">
+                        Maybe Later
+                    </button>
+                </div>
+            `;
+
+        document.body.appendChild(customizer);
+
+        const style = document.createElement("style");
+        style.textContent = `
+                @keyframes customizerOpen {
+                    0% { transform: translate(-50%, -50%) scale(0.3) rotateY(180deg); opacity: 0; }
+                    100% { transform: translate(-50%, -50%) scale(1) rotateY(0deg); opacity: 1; }
+                }
+                @keyframes rainbowShift {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+            `;
+        document.head.appendChild(style);
+      }
+
+      // Enhanced sparkle effect
+      function createSparkles(container) {
+        for (let i = 0; i < 15; i++) {
+          const sparkle = document.createElement("div");
+          sparkle.style.cssText = `
+                    position: absolute;
+                    width: 6px;
+                    height: 6px;
+                    background: ${
+                      ["#FFD700", "#FF69B4", "#00CED1", "#FF6347"][
+                        Math.floor(Math.random() * 4)
+                      ]
+                    };
+                    border-radius: 50%;
+                    pointer-events: none;
+                    top: ${Math.random() * 300}px;
+                    left: ${Math.random() * 300}px;
+                    animation: sparkleAdvanced 2s ease-out forwards;
+                    box-shadow: 0 0 10px currentColor;
+                `;
+
+          container.appendChild(sparkle);
+          setTimeout(() => sparkle.remove(), 2000);
+        }
+
+        const sparkleStyle = document.createElement("style");
+        sparkleStyle.textContent = `
+                @keyframes sparkleAdvanced {
+                    0% { opacity: 1; transform: scale(0) rotate(0deg); }
+                    50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+                    100% { opacity: 0; transform: scale(0) rotate(360deg) translateY(-100px); }
+                }
+            `;
+        document.head.appendChild(sparkleStyle);
+      }
+
+      // Smooth scrolling
+      function scrollToProducts() {
+        document.getElementById("products").scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+
+      // Enhanced parallax effect
+      window.addEventListener("scroll", () => {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector(".floating-elements");
+        const speed = scrolled * 0.3;
+        parallax.style.transform = `translateY(${speed}px)`;
+
+        // Parallax for clouds
+        document.querySelectorAll(".cloud").forEach((cloud, index) => {
+          const speed = 0.2 + index * 0.1;
+          cloud.style.transform += ` translateY(${scrolled * speed}px)`;
+        });
+      });
+
+      // Interactive cursor effect
+      document.addEventListener("mousemove", (e) => {
+        const cursor = document.querySelector(".cursor") || createCursor();
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+
+      function createCursor() {
+        const cursor = document.createElement("div");
+        cursor.className = "cursor";
+        cursor.style.cssText = `
+                position: fixed;
+                width: 25px;
+                height: 25px;
+                background: radial-gradient(circle, rgba(76, 205, 196, 0.6), rgba(255, 107, 107, 0.3));
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.1s ease;
+                mix-blend-mode: difference;
+            `;
+        document.body.appendChild(cursor);
+        return cursor;
+      }
+
+      // Enhanced hover effects
+      document
+        .querySelectorAll(".tree-birdhouse, .product-card, .cta-button, .cloud")
+        .forEach((element) => {
+          element.addEventListener("mouseenter", () => {
+            const cursor = document.querySelector(".cursor");
+            if (cursor) cursor.style.transform = "scale(2.5)";
+          });
+
+          element.addEventListener("mouseleave", () => {
+            const cursor = document.querySelector(".cursor");
+            if (cursor) cursor.style.transform = "scale(1)";
+          });
+        });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        showNotification("🏠 Welcome to Al's Bird Houses!");
+        setTimeout(() => {
+          if (Math.random() > 0.7) {
+            showNotification("🎵 Click the sound button for audio effects!");
+          }
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>
